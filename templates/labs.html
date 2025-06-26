@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Labs - RootQuest</title>
+</head>
+<body>
+    <h1>Available Labs</h1>
+
+    {% for lab in labs %}
+    <div>
+        <h2>{{ lab.name }}</h2>
+        <p>{{ lab.description }}</p>
+        <form action="/run-lab/{{ lab.id }}" method="post" style="display:inline;">
+            <button type="submit">Run Lab</button>
+        </form>
+        <a href="/labs/{{ lab.id }}/flag" target="_blank" style="margin-left: 10px;">View Flag (testing only)</a>
+    </div>
+    <hr>
+    {% endfor %}
+
+</body>
+</html>

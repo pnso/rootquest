@@ -1,0 +1,9 @@
+{
+  "labs": [
+    {
+      "id": "sudo-lab",
+      "name": "Sudo Lab",
+      "description": "Exploit a misconfigured sudo rule to escalate privileges to root."
+    }
+  ]
+}

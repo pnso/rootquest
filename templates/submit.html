@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Flag</title>
+</head>
+<body>
+    <h1>Submit Flag for {{ lab_id }}</h1>
+    <form method="post">
+        <input type="text" name="flag" placeholder="Enter flag" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, msg in messages %}
+                <p style="color: {% if category == 'success' %}green{% elif category == 'error' %}red{% else %}black{% endif %};">{{ msg }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <a href="/labs">← Back to Labs</a>
+</body>
+</html>

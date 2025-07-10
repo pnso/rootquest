@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import json
 import subprocess
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv('ROOTQUEST_SECRET_KEY', 'fallback_dev_key')
 
 @app.route("/")
 def home():
@@ -25,14 +29,30 @@ def run_lab(lab_id):
     return redirect(url_for("labs"))
 
 @app.route("/labs/<lab_id>/flag")
-def get_flag(lab_id):
-    flag_path = os.path.join("labs", lab_id, "flag.txt")
-    try:
-        with open(flag_path) as f:
-            flag = f.read().strip()
-        return f"<h1>Flag: {flag}</h1>"
-    except Exception as e:
-        return f"Error reading flag for {lab_id}: {e}"
+def view_flag(lab_id):
+    flag_path = f"labs/{lab_id}/flag.txt"
+    if not os.path.exists(flag_path):
+        return f"Flag not found for {lab_id}", 404
+    with open(flag_path) as f:
+        return f"<pre>{f.read()}</pre>"
+
+@app.route("/labs/<lab_id>/submit", methods=["GET", "POST"])
+def submit_flag(lab_id):
+    flag_path = f"labs/{lab_id}/flag.txt"
+    if request.method == "POST":
+        user_flag = request.form.get("flag", "").strip()
+        if not os.path.exists(flag_path):
+            flash("Flag file missing!", "error")
+        else:
+            with open(flag_path) as f:
+                correct_flag = f.read().strip()
+            if user_flag == correct_flag:
+                flash("✅ Correct flag!", "success")
+            else:
+                flash("❌ Incorrect flag.", "error")
+        return redirect(url_for("submit_flag", lab_id=lab_id))
+
+    return render_template("submit.html", lab_id=lab_id)
 
 if __name__ == "__main__":
     app.run(debug=True)

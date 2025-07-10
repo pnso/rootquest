@@ -12,14 +12,14 @@ RootQuest is a collection of hands-on, containerized cybersecurity labs. Built f
 
 ## 📦 Labs Available
 
-- `sudo-lab`: Misconfigured sudo privileges — escalate to root.
+- `sudo-less-lab`: Exploit misconfigured sudo access to `less` for privilege escalation.
 
 More labs coming soon...
 
 ## ⚙️ How to Run a Lab
 
 ```bash
-cd labs/sudo-lab
-docker build -t sudo-lab .
-docker run -it --rm sudo-lab
+cd labs/sudo-less-lab
+docker build -t sudo-less-lab .
+docker run -it --rm sudo-less-lab
 ```
